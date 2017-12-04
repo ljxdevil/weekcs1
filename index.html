@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./App/Content/fontstwo/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="./App/Content/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./App/Content/css/style.css">
+
+</head>
+
+<body ng-app="app">
+    <div class="wrap" ng-controller="dls">
+        <header>
+            <h2>公司</h2>
+        </header>
+        <div class="sec">
+            <div class="nav">
+                <ul>
+                    <li>融资</li>
+                    <li>规模</li>
+                    <li>行业</li>
+                </ul>
+            </div>
+            <div class="dlist">
+                <dl ng-repeat="i in arr">
+                    <dt><img ng-src="{{i.src}}"></dt>
+                    <dd>
+                        <h3>{{i.h3}}</h3>
+                        <p>{{i.address}}</p>
+                        <p>{{i.p1}}</p>
+                        <p style="margin-top:10px">热招： <span style="color:skyblue">{{i.who}}</span> 等 <span>{{i.num}}</span> 个职位</p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <footer>
+            <ul>
+                <li><i class="iconfont">&#xe6ad;</i> <span>首页</span> </li>
+                <li><i class="iconfont">&#xe648;</i> <span>工资</span> </li>
+                <li><i class="iconfont">&#xe6ae;</i> <span>消息</span> </li>
+                <li><i class="iconfont">&#xe6cc;</i> <span>我的</span> </li>
+            </ul>
+        </footer>
+    </div>
+    <script src="./App/Script/angular.min.js"></script>
+    <script src="./App/app.js"></script>
+    <script>
+        function ajax(url) {
+            return new Promise(function() {
+                var xml = null;
+                if (window.XMLHttpRequest) {
+                    xml = new XMLHttpRequest();
+                } else {
+                    xml = new ActiveXObject('Microsoft.XMLHTTP')
+                }
+                xml.open('GET', url, true)
+                xml.send(null)
+                xml.onreadystatechange = function() {
+                    if (xml.readyState !== 4) return;
+                    if (xml.status === 200) {
+                        // console.log(xml.responseText)
+                        var str = JSON.parse(xml.responseText);
+                        app.controller('dls', function($scope) {
+                            // console.log(str)
+                            $scope.arr = str;
+                        })
+                    }
+                }
+            })
+        }
+        ajax('http://localhost:8889/data').then(function(data) {
+            console.log(data)
+        })
+    </script>
+</body>
+
+</html>
